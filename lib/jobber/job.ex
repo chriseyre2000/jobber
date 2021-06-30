@@ -1,5 +1,5 @@
 defmodule Jobber.Job do
-  use GenServer
+  use GenServer, restart: :transient
   require Logger
 
 
@@ -54,5 +54,9 @@ defmodule Jobber.Job do
   def handle_info(:retry, state) do
     #Delegate the work to the handle_continue/2 callback
     {:noreply, state, {:continue, :run}}
+  end
+
+  def start_link(args) do
+    GenServer.start_link(__MODULE__, args)
   end
 end
